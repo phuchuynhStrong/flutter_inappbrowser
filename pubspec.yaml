@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  uuid: ^2.0.0
+  uuid: ^1.0.3
   mime: ^0.9.6+2
 
 # For information on the generic Dart part of this file, see the
