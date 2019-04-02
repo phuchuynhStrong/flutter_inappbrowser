@@ -30,6 +30,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter/rendering.dart';
 import 'package:uuid/uuid.dart';
 import 'package:mime/mime.dart';
 
@@ -638,6 +639,8 @@ class InAppWebView extends StatefulWidget {
   ///Initial options that will be used.
   final Map<String, dynamic> initialOptions;
   final Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers;
+  final Function onLongPress;
+  final Function onLongPressStart;
 
   const InAppWebView({
     Key key,
@@ -650,6 +653,8 @@ class InAppWebView extends StatefulWidget {
     this.onLoadStart,
     this.onLoadStop,
     this.onLoadError,
+    this.onLongPress,
+    this.onLongPressStart,
     this.onConsoleMessage,
     this.onProgressChanged,
     this.shouldOverrideUrlLoading,
@@ -679,19 +684,29 @@ class _InAppWebViewState extends State<InAppWebView> {
   Widget build(BuildContext context) {
     if (defaultTargetPlatform == TargetPlatform.android) {
       return GestureDetector(
-        onLongPress: () {},
+        onLongPressStart: (position) {
+          if (widget.onLongPressStart != null) {
+            widget.onLongPressStart(position);
+          }
+        },
+        onLongPress: () {
+          if (widget.onLongPress != null) {
+            widget.onLongPress();
+          }
+        },
         child: AndroidView(
           viewType: 'com.pichillilorenzo/flutter_inappwebview',
           onPlatformViewCreated: _onPlatformViewCreated,
+          hitTestBehavior: PlatformViewHitTestBehavior.translucent,
           gestureRecognizers: widget.gestureRecognizers,
-          layoutDirection: TextDirection.rtl,
+          layoutDirection: TextDirection.ltr,
           creationParams: <String, dynamic>{
-              'initialUrl': widget.initialUrl,
-              'initialFile': widget.initialFile,
-              'initialData': widget.initialData?.toMap(),
-              'initialHeaders': widget.initialHeaders,
-              'initialOptions': widget.initialOptions
-            },
+            'initialUrl': widget.initialUrl,
+            'initialFile': widget.initialFile,
+            'initialData': widget.initialData?.toMap(),
+            'initialHeaders': widget.initialHeaders,
+            'initialOptions': widget.initialOptions
+          },
           creationParamsCodec: const StandardMessageCodec(),
         ),
       );
