@@ -83,6 +83,7 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
     var currentURL: URL?
     var WKNavigationMap: [String: [String: Any]] = [:]
     var startPageTime: Int64 = 0
+    var isEditable = false
     
     init(frame: CGRect, configuration: WKWebViewConfiguration, IABController: InAppBrowserWebViewController?, IAWController: FlutterWebViewController?) {
         super.init(frame: frame, configuration: configuration)
@@ -91,6 +92,24 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
         uiDelegate = self
         navigationDelegate = self
         scrollView.delegate = self
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        UIMenuController.shared.menuItems = [UIMenuItem(title: "Comment", action: #selector(self.onCommentPressed))]
+        UIMenuController.shared.update()
+    }
+    
+    @objc public func enableEditting() {
+        isEditable = true
+        self.becomeFirstResponder()
+    }
+    
+    @objc public func disableEditting() {
+        isEditable = false
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if (!isEditable) {
+            self.endEditing(true)
+        }
     }
     
     required public init(coder aDecoder: NSCoder) {
@@ -773,5 +792,9 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
     
     private func getChannel() -> FlutterMethodChannel {
         return (IABController != nil) ? SwiftFlutterPlugin.channel! : IAWController!.channel!;
+    }
+    
+    @objc public func onCommentPressed() {
+        self.enableEditting()
     }
 }

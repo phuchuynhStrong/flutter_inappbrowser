@@ -237,6 +237,10 @@ public class FlutterWebViewController: NSObject, FlutterPlatformView {
                 dispose()
                 result(true)
                 break
+            case "disableEditting":
+                self.webView?.disableEditting()
+                result(true)
+                break
             default:
                 result(FlutterMethodNotImplemented)
                 break
