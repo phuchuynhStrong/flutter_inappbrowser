@@ -402,6 +402,10 @@ class InAppBrowser {
 
   }
 
+  void onShowComment() {
+
+  }
+
   void _throwIsAlreadyOpened({String message = ''}) {
     if (this.isOpened()) {
       throw Exception(['Error: ${ (message.isEmpty) ? '' : message + ' '}The browser is already opened.']);
@@ -640,7 +644,7 @@ class InAppWebView extends StatefulWidget {
   final Map<String, dynamic> initialOptions;
   final Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers;
   final Function onLongPress;
-  final Function onLongPressStart;
+  final Function onShowComment;
 
   const InAppWebView({
     Key key,
@@ -654,7 +658,7 @@ class InAppWebView extends StatefulWidget {
     this.onLoadStop,
     this.onLoadError,
     this.onLongPress,
-    this.onLongPressStart,
+    this.onShowComment,
     this.onConsoleMessage,
     this.onProgressChanged,
     this.shouldOverrideUrlLoading,
@@ -684,11 +688,6 @@ class _InAppWebViewState extends State<InAppWebView> {
   Widget build(BuildContext context) {
     if (defaultTargetPlatform == TargetPlatform.android) {
       return GestureDetector(
-        onLongPressStart: (position) {
-          if (widget.onLongPressStart != null) {
-            widget.onLongPressStart(position);
-          }
-        },
         onLongPress: () {
           if (widget.onLongPress != null) {
             widget.onLongPress();
@@ -867,6 +866,14 @@ class InAppWebViewController {
           for (var handler in javaScriptHandlersMap[handlerName]) {
             handler(args);
           }
+        }
+        break;
+      case "onShowComment":
+        if (_widget.onShowComment != null) {
+          _widget.onShowComment();
+        }
+        else {
+          _inAppBrowser.onShowComment();
         }
         break;
       default:

@@ -796,5 +796,6 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
     
     @objc public func onCommentPressed() {
         self.enableEditting()
+        getChannel().invokeMethod("onShowComment", arguments: nil)
     }
 }
