@@ -1256,6 +1256,10 @@ class InAppWebViewController {
     await _channel.invokeMethod('dispose');
   }
 
+  Future<void> disableEditting() async {
+    await _channel.invokeMethod("disableEditting");
+  }
+
 }
 
 ///WebHistory class.
