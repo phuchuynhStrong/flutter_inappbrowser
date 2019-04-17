@@ -639,7 +639,7 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
         if IABController != nil {
             arguments["uuid"] = IABController!.uuid
         }
-        getChannel().invokeMethod("onLoadStart", arguments: arguments)
+        getChannel()?.invokeMethod("onLoadStart", arguments: arguments)
     }
     
     public func onLoadStop(url: String) {
@@ -647,7 +647,7 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
         if IABController != nil {
             arguments["uuid"] = IABController!.uuid
         }
-        getChannel().invokeMethod("onLoadStop", arguments: arguments)
+        getChannel()?.invokeMethod("onLoadStop", arguments: arguments)
     }
     
     public func onLoadError(url: String, error: Error) {
@@ -655,7 +655,7 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
         if IABController != nil {
             arguments["uuid"] = IABController!.uuid
         }
-        getChannel().invokeMethod("onLoadError", arguments: arguments)
+        getChannel()?.invokeMethod("onLoadError", arguments: arguments)
     }
     
     public func onProgressChanged(progress: Int) {
@@ -663,7 +663,7 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
         if IABController != nil {
             arguments["uuid"] = IABController!.uuid
         }
-        getChannel().invokeMethod("onProgressChanged", arguments: arguments)
+        getChannel()?.invokeMethod("onProgressChanged", arguments: arguments)
     }
     
     public func onLoadResource(response: URLResponse, fromRequest request: URLRequest?, withData data: Data, startTime: Int64, duration: Int64) {
@@ -691,7 +691,7 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
         if IABController != nil {
             arguments["uuid"] = IABController!.uuid
         }
-        getChannel().invokeMethod("onLoadResource", arguments: arguments)
+        getChannel()?.invokeMethod("onLoadResource", arguments: arguments)
     }
     
     public func onScrollChanged(x: Int, y: Int) {
@@ -699,7 +699,7 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
         if IABController != nil {
             arguments["uuid"] = IABController!.uuid
         }
-        getChannel().invokeMethod("onScrollChanged", arguments: arguments)
+        getChannel()?.invokeMethod("onScrollChanged", arguments: arguments)
     }
     
     public func shouldOverrideUrlLoading(url: URL) {
@@ -707,7 +707,7 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
         if IABController != nil {
             arguments["uuid"] = IABController!.uuid
         }
-        getChannel().invokeMethod("shouldOverrideUrlLoading", arguments: arguments)
+        getChannel()?.invokeMethod("shouldOverrideUrlLoading", arguments: arguments)
     }
     
     public func onConsoleMessage(sourceURL: String, lineNumber: Int, message: String, messageLevel: String) {
@@ -715,7 +715,7 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
         if IABController != nil {
             arguments["uuid"] = IABController!.uuid
         }
-        getChannel().invokeMethod("onConsoleMessage", arguments: arguments)
+        getChannel()?.invokeMethod("onConsoleMessage", arguments: arguments)
     }
     
     public func onCallJsHandler(handlerName: String, args: String) {
@@ -723,7 +723,7 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
         if IABController != nil {
             arguments["uuid"] = IABController!.uuid
         }
-        getChannel().invokeMethod("onCallJsHandler", arguments: arguments)
+        getChannel()?.invokeMethod("onCallJsHandler", arguments: arguments)
     }
     
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
@@ -790,12 +790,12 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
         }
     }
     
-    private func getChannel() -> FlutterMethodChannel {
-        return (IABController != nil) ? SwiftFlutterPlugin.channel! : IAWController!.channel!;
+    private func getChannel() -> FlutterMethodChannel? {
+        return (IABController != nil ) ? SwiftFlutterPlugin.channel : IAWController?.channel;
     }
     
     @objc public func onCommentPressed() {
         self.enableEditting()
-        getChannel().invokeMethod("onShowComment", arguments: nil)
+        getChannel()?.invokeMethod("onShowComment", arguments: nil)
     }
 }
