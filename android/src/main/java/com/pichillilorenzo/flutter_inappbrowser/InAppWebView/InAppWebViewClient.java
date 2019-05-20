@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
@@ -15,6 +14,8 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import androidx.annotation.RequiresApi;
 
 import com.pichillilorenzo.flutter_inappbrowser.FlutterWebView;
 import com.pichillilorenzo.flutter_inappbrowser.InAppBrowserActivity;

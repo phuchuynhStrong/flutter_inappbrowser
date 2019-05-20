@@ -6,10 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Picture;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,6 +14,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.pichillilorenzo.flutter_inappbrowser.InAppWebView.InAppWebView;
 import com.pichillilorenzo.flutter_inappbrowser.InAppWebView.InAppWebViewOptions;
