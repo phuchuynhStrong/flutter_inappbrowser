@@ -92,7 +92,7 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
         uiDelegate = self
         navigationDelegate = self
         scrollView.delegate = self
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: NSNotification.Name.UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         UIMenuController.shared.menuItems = [UIMenuItem(title: "Comment", action: #selector(self.onCommentPressed))]
         UIMenuController.shared.update()
     }
