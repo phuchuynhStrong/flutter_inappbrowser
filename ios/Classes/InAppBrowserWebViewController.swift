@@ -122,9 +122,9 @@ class InAppBrowserWebViewController: UIViewController, UIScrollViewDelegate, WKU
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        webView.uiDelegate = self
-//        webView.navigationDelegate = nil
-//        webView.scrollView.delegate = self
+        //        webView.uiDelegate = self
+        //        webView.navigationDelegate = nil
+        //        webView.scrollView.delegate = self
         
         urlField.delegate = self
         urlField.text = self.initURL?.absoluteString
@@ -171,8 +171,8 @@ class InAppBrowserWebViewController: UIViewController, UIScrollViewDelegate, WKU
     }
     
     func prepareConstraints () {
-        webView_BottomFullScreenConstraint = NSLayoutConstraint(item: self.webView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.view, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0)
-        webView_TopFullScreenConstraint = NSLayoutConstraint(item: self.webView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: self.view, attribute: NSLayoutAttribute.top, multiplier: 1, constant: 0)
+        webView_BottomFullScreenConstraint = NSLayoutConstraint(item: self.webView, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self.view, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0)
+        webView_TopFullScreenConstraint = NSLayoutConstraint(item: self.webView, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutRelation.equal, toItem: self.view, attribute: NSLayoutAttribute.top, multiplier: 1, constant: 0)
     }
     
     func prepareWebView() {
@@ -250,7 +250,7 @@ class InAppBrowserWebViewController: UIViewController, UIScrollViewDelegate, WKU
     }
     
     func setWebViewFrame(_ frame: CGRect) {
-        print("Setting the WebView's frame to \(NSStringFromCGRect(frame))")
+        print("Setting the WebView's frame to \(NSCoder.string(for: frame))")
         webView.frame = frame
     }
     
@@ -272,7 +272,7 @@ class InAppBrowserWebViewController: UIViewController, UIScrollViewDelegate, WKU
         DispatchQueue.main.async(execute: {() -> Void in
             if (weakSelf?.responds(to: #selector(getter: self.presentingViewController)))! {
                 weakSelf?.presentingViewController?.dismiss(animated: true, completion: {() -> Void in
-                    self.tmpWindow?.windowLevel = 0.0
+                    self.tmpWindow?.windowLevel = UIWindow.Level(rawValue: 0.0)
                     UIApplication.shared.delegate?.window??.makeKeyAndVisible()
                     if (self.navigationDelegate != nil) {
                         self.navigationDelegate?.browserExit(uuid: self.uuid)
@@ -281,7 +281,7 @@ class InAppBrowserWebViewController: UIViewController, UIScrollViewDelegate, WKU
             }
             else {
                 weakSelf?.parent?.dismiss(animated: true, completion: {() -> Void in
-                    self.tmpWindow?.windowLevel = 0.0
+                    self.tmpWindow?.windowLevel = UIWindow.Level(rawValue: 0.0)
                     UIApplication.shared.delegate?.window??.makeKeyAndVisible()
                     if (self.navigationDelegate != nil) {
                         self.navigationDelegate?.browserExit(uuid: self.uuid)
@@ -366,7 +366,7 @@ class InAppBrowserWebViewController: UIViewController, UIScrollViewDelegate, WKU
         scanner.scanHexInt32(&hexInt)
         return hexInt
     }
-
+    
     func setOptions(newOptions: InAppBrowserOptions, newOptionsMap: [String: Any]) {
         
         let newInAppWebViewOptions = InAppWebViewOptions()
@@ -381,7 +381,7 @@ class InAppBrowserWebViewController: UIViewController, UIScrollViewDelegate, WKU
                 self.navigationDelegate?.show(uuid: self.uuid)
             }
         }
-
+        
         if newOptionsMap["hideUrlBar"] != nil && browserOptions?.hideUrlBar != newOptions.hideUrlBar {
             self.urlField.isHidden = newOptions.hideUrlBar
             self.urlField.isEnabled = !newOptions.hideUrlBar
@@ -439,5 +439,5 @@ class InAppBrowserWebViewController: UIViewController, UIScrollViewDelegate, WKU
         optionsMap.merge(self.webView.getOptions()!, uniquingKeysWith: { (current, _) in current })
         return optionsMap
     }
-
+    
 }

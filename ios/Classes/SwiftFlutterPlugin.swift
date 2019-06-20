@@ -68,180 +68,180 @@ public class SwiftFlutterPlugin: NSObject, FlutterPlugin {
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         let arguments = call.arguments as? NSDictionary
         let uuid: String = arguments!["uuid"] as! String
-
+        
         switch call.method {
-            case "open":
-                self.open(uuid: uuid, arguments: arguments!, result: result)
-                break
-            case "getUrl":
-                if let webViewController = self.webViewControllers[uuid] {
-                    result(webViewController!.webView.url?.absoluteString)
-                }
-                else {
-                    result(nil)
-                }
-                break
-            case "getTitle":
-                if let webViewController = self.webViewControllers[uuid] {
-                    result(webViewController!.webView.title)
-                }
-                else {
-                    result(nil)
-                }
-                break
-            case "getProgress":
-                if let webViewController = self.webViewControllers[uuid] {
-                    let progress = Int(webViewController!.webView.estimatedProgress * 100)
-                    result(progress)
-                }
-                else {
-                    result(nil)
-                }
-                break
-            case "loadUrl":
-                self.loadUrl(uuid: uuid, arguments: arguments!, result: result)
-                break
-            case "loadData":
-                self.loadData(uuid: uuid, arguments: arguments!, result: result)
-                break
-            case "postUrl":
-                self.postUrl(uuid: uuid, arguments: arguments!, result: result)
-                break
-            case "loadFile":
-                self.loadFile(uuid: uuid, arguments: arguments!, result: result)
-                break
-            case "close":
-                self.close(uuid: uuid)
-                result(true)
-                break
-            case "show":
-                self.show(uuid: uuid)
-                result(true)
-                break
-            case "hide":
-                self.hide(uuid: uuid)
-                result(true)
-                break
-            case "reload":
-                if let webViewController = self.webViewControllers[uuid] {
-                    webViewController!.reload()
-                }
-                result(true)
-                break
-            case "goBack":
-                if let webViewController = self.webViewControllers[uuid] {
-                    webViewController!.goBack()
-                }
-                result(true)
-                break
-            case "canGoBack":
-                if let webViewController = self.webViewControllers[uuid] {
-                    result(webViewController!.canGoBack())
-                }
-                else {
-                    result(false)
-                }
-                break
-            case "goForward":
-                if let webViewController = self.webViewControllers[uuid] {
-                    webViewController!.goForward()
-                }
-                result(true)
-                break
-            case "canGoForward":
-                if let webViewController = self.webViewControllers[uuid] {
-                    result(webViewController!.canGoForward())
-                }
-                else {
-                    result(false)
-                }
-                break
-            case "goBackOrForward":
-                if let webViewController = self.webViewControllers[uuid] {
-                    let steps = arguments!["steps"] as! Int
-                    webViewController!.goBackOrForward(steps: steps)
-                }
-                result(true)
-                break
-            case "canGoBackOrForward":
-                if let webViewController = self.webViewControllers[uuid] {
-                    let steps = arguments!["steps"] as! Int
-                    result(webViewController!.canGoBackOrForward(steps: steps))
-                }
-                else {
-                    result(false)
-                }
-                break
-            case "isLoading":
-                if let webViewController = self.webViewControllers[uuid] {
-                    result(webViewController!.webView.isLoading == true)
-                }
-                else {
-                    result(false)
-                }
-                break
-            case "stopLoading":
-                if let webViewController = self.webViewControllers[uuid] {
-                    webViewController!.webView.stopLoading()
-                }
-                result(true)
-                break
-            case "isHidden":
-                if let webViewController = self.webViewControllers[uuid] {
-                    result(webViewController!.isHidden == true)
-                }
-                else {
-                    result(false)
-                }
-                break
-            case "injectScriptCode":
-                self.injectScriptCode(uuid: uuid, arguments: arguments!, result: result)
-                break
-            case "injectScriptFile":
-                self.injectScriptFile(uuid: uuid, arguments: arguments!, result: nil)
-                result(true)
-                break
-            case "injectStyleCode":
-                self.injectStyleCode(uuid: uuid, arguments: arguments!, result: nil)
-                result(true)
-                break
-            case "injectStyleFile":
-                self.injectStyleFile(uuid: uuid, arguments: arguments!, result: nil)
-                result(true)
-                break
-            case "takeScreenshot":
-                if let webViewController = self.webViewControllers[uuid] {
-                    webViewController!.webView.takeScreenshot(completionHandler: { (screenshot) -> Void in
-                        result(screenshot)
-                    })
-                }
-                else {
-                    result(nil)
-                }
-                break
-            case "setOptions":
-                let optionsType = arguments!["optionsType"] as! String
-                switch (optionsType){
-                    case "InAppBrowserOptions":
-                        let inAppBrowserOptions = InAppBrowserOptions()
-                        let inAppBrowserOptionsMap = arguments!["options"] as! [String: Any]
-                        inAppBrowserOptions.parse(options: inAppBrowserOptionsMap)
-                        self.setOptions(uuid: uuid, options: inAppBrowserOptions, optionsMap: inAppBrowserOptionsMap)
-                        break
-                    default:
-                        result(FlutterError(code: "InAppBrowserFlutterPlugin", message: "Options " + optionsType + " not available.", details: nil))
-                }
-                result(true)
-                break
-            case "getOptions":
-                result(self.getOptions(uuid: uuid))
-                break
-            case "getCopyBackForwardList":
-                result(self.getCopyBackForwardList(uuid: uuid))
+        case "open":
+            self.open(uuid: uuid, arguments: arguments!, result: result)
+            break
+        case "getUrl":
+            if let webViewController = self.webViewControllers[uuid] {
+                result(webViewController!.webView.url?.absoluteString)
+            }
+            else {
+                result(nil)
+            }
+            break
+        case "getTitle":
+            if let webViewController = self.webViewControllers[uuid] {
+                result(webViewController!.webView.title)
+            }
+            else {
+                result(nil)
+            }
+            break
+        case "getProgress":
+            if let webViewController = self.webViewControllers[uuid] {
+                let progress = Int(webViewController!.webView.estimatedProgress * 100)
+                result(progress)
+            }
+            else {
+                result(nil)
+            }
+            break
+        case "loadUrl":
+            self.loadUrl(uuid: uuid, arguments: arguments!, result: result)
+            break
+        case "loadData":
+            self.loadData(uuid: uuid, arguments: arguments!, result: result)
+            break
+        case "postUrl":
+            self.postUrl(uuid: uuid, arguments: arguments!, result: result)
+            break
+        case "loadFile":
+            self.loadFile(uuid: uuid, arguments: arguments!, result: result)
+            break
+        case "close":
+            self.close(uuid: uuid)
+            result(true)
+            break
+        case "show":
+            self.show(uuid: uuid)
+            result(true)
+            break
+        case "hide":
+            self.hide(uuid: uuid)
+            result(true)
+            break
+        case "reload":
+            if let webViewController = self.webViewControllers[uuid] {
+                webViewController!.reload()
+            }
+            result(true)
+            break
+        case "goBack":
+            if let webViewController = self.webViewControllers[uuid] {
+                webViewController!.goBack()
+            }
+            result(true)
+            break
+        case "canGoBack":
+            if let webViewController = self.webViewControllers[uuid] {
+                result(webViewController!.canGoBack())
+            }
+            else {
+                result(false)
+            }
+            break
+        case "goForward":
+            if let webViewController = self.webViewControllers[uuid] {
+                webViewController!.goForward()
+            }
+            result(true)
+            break
+        case "canGoForward":
+            if let webViewController = self.webViewControllers[uuid] {
+                result(webViewController!.canGoForward())
+            }
+            else {
+                result(false)
+            }
+            break
+        case "goBackOrForward":
+            if let webViewController = self.webViewControllers[uuid] {
+                let steps = arguments!["steps"] as! Int
+                webViewController!.goBackOrForward(steps: steps)
+            }
+            result(true)
+            break
+        case "canGoBackOrForward":
+            if let webViewController = self.webViewControllers[uuid] {
+                let steps = arguments!["steps"] as! Int
+                result(webViewController!.canGoBackOrForward(steps: steps))
+            }
+            else {
+                result(false)
+            }
+            break
+        case "isLoading":
+            if let webViewController = self.webViewControllers[uuid] {
+                result(webViewController!.webView.isLoading == true)
+            }
+            else {
+                result(false)
+            }
+            break
+        case "stopLoading":
+            if let webViewController = self.webViewControllers[uuid] {
+                webViewController!.webView.stopLoading()
+            }
+            result(true)
+            break
+        case "isHidden":
+            if let webViewController = self.webViewControllers[uuid] {
+                result(webViewController!.isHidden == true)
+            }
+            else {
+                result(false)
+            }
+            break
+        case "injectScriptCode":
+            self.injectScriptCode(uuid: uuid, arguments: arguments!, result: result)
+            break
+        case "injectScriptFile":
+            self.injectScriptFile(uuid: uuid, arguments: arguments!, result: nil)
+            result(true)
+            break
+        case "injectStyleCode":
+            self.injectStyleCode(uuid: uuid, arguments: arguments!, result: nil)
+            result(true)
+            break
+        case "injectStyleFile":
+            self.injectStyleFile(uuid: uuid, arguments: arguments!, result: nil)
+            result(true)
+            break
+        case "takeScreenshot":
+            if let webViewController = self.webViewControllers[uuid] {
+                webViewController!.webView.takeScreenshot(completionHandler: { (screenshot) -> Void in
+                    result(screenshot)
+                })
+            }
+            else {
+                result(nil)
+            }
+            break
+        case "setOptions":
+            let optionsType = arguments!["optionsType"] as! String
+            switch (optionsType){
+            case "InAppBrowserOptions":
+                let inAppBrowserOptions = InAppBrowserOptions()
+                let inAppBrowserOptionsMap = arguments!["options"] as! [String: Any]
+                inAppBrowserOptions.parse(options: inAppBrowserOptionsMap)
+                self.setOptions(uuid: uuid, options: inAppBrowserOptions, optionsMap: inAppBrowserOptionsMap)
                 break
             default:
-                result(FlutterMethodNotImplemented)
-                break
+                result(FlutterError(code: "InAppBrowserFlutterPlugin", message: "Options " + optionsType + " not available.", details: nil))
+            }
+            result(true)
+            break
+        case "getOptions":
+            result(self.getOptions(uuid: uuid))
+            break
+        case "getCopyBackForwardList":
+            result(self.getCopyBackForwardList(uuid: uuid))
+            break
+        default:
+            result(FlutterMethodNotImplemented)
+            break
         }
     }
     
@@ -267,10 +267,10 @@ public class SwiftFlutterPlugin: NSObject, FlutterPlugin {
         
         if !isData {
             let url: String = (arguments["url"] as? String)!
-
+            
             let headers = (arguments["headers"] as? [String: String])!
             var absoluteUrl = URL(string: url)?.absoluteURL
-
+            
             let useChromeSafariBrowser = (arguments["useChromeSafariBrowser"] as? Bool)!
             
             if useChromeSafariBrowser {
@@ -296,7 +296,7 @@ public class SwiftFlutterPlugin: NSObject, FlutterPlugin {
                     }
                     absoluteUrl = assetURL!
                 }
-
+                
                 if isSystemUrl(absoluteUrl!) {
                     openWithSystemBrowser = true
                 }
@@ -350,7 +350,7 @@ public class SwiftFlutterPlugin: NSObject, FlutterPlugin {
         let tmpController = UIViewController()
         let baseWindowLevel = UIApplication.shared.keyWindow?.windowLevel
         self.tmpWindow?.rootViewController = tmpController
-        self.tmpWindow?.windowLevel = UIWindowLevel(baseWindowLevel! + 1)
+        self.tmpWindow?.windowLevel = UIWindow.Level(baseWindowLevel! + 1)
         self.tmpWindow?.makeKeyAndVisible()
         
         let browserOptions: InAppBrowserOptions
@@ -427,15 +427,15 @@ public class SwiftFlutterPlugin: NSObject, FlutterPlugin {
         if browserOptions.hidden {
             webViewController.view.isHidden = true
             tmpController.present(webViewController, animated: false, completion: {() -> Void in
-//                if self.previousStatusBarStyle != -1 {
-//                    UIApplication.shared.statusBarStyle = UIStatusBarStyle(rawValue: self.previousStatusBarStyle)!
-//                }
+                //                if self.previousStatusBarStyle != -1 {
+                //                    UIApplication.shared.statusBarStyle = UIStatusBarStyle(rawValue: self.previousStatusBarStyle)!
+                //                }
             })
-//            if self.previousStatusBarStyle != -1 {
-//                UIApplication.shared.statusBarStyle = UIStatusBarStyle(rawValue: self.previousStatusBarStyle)!
-//            }
+            //            if self.previousStatusBarStyle != -1 {
+            //                UIApplication.shared.statusBarStyle = UIStatusBarStyle(rawValue: self.previousStatusBarStyle)!
+            //            }
             webViewController.presentingViewController?.dismiss(animated: false, completion: {() -> Void in
-                self.tmpWindow?.windowLevel = 0.0
+                self.tmpWindow?.windowLevel = UIWindow.Level(rawValue: 0.0)
                 UIApplication.shared.delegate?.window??.makeKeyAndVisible()
             })
         }
@@ -466,7 +466,7 @@ public class SwiftFlutterPlugin: NSObject, FlutterPlugin {
         let tmpController = UIViewController()
         let baseWindowLevel = UIApplication.shared.keyWindow?.windowLevel
         self.tmpWindow?.rootViewController = tmpController
-        self.tmpWindow?.windowLevel = UIWindowLevel(baseWindowLevel! + 1)
+        self.tmpWindow?.windowLevel = UIWindow.Level(baseWindowLevel! + 1)
         self.tmpWindow?.makeKeyAndVisible()
         
         let browserOptions: InAppBrowserOptions
@@ -499,7 +499,7 @@ public class SwiftFlutterPlugin: NSObject, FlutterPlugin {
                 webViewController.loadData(data: data, mimeType: mimeType, encoding: encoding, baseUrl: baseUrl)
             })
             webViewController.presentingViewController?.dismiss(animated: false, completion: {() -> Void in
-                self.tmpWindow?.windowLevel = 0.0
+                self.tmpWindow?.windowLevel = UIWindow.Level(rawValue: 0.0)
                 UIApplication.shared.delegate?.window??.makeKeyAndVisible()
             })
         }
@@ -552,7 +552,7 @@ public class SwiftFlutterPlugin: NSObject, FlutterPlugin {
         let webViewController: InAppBrowserWebViewController = self.webViewControllers[uuid] as! InAppBrowserWebViewController
         if let url = arguments["url"] as? String {
             let headers = (arguments["headers"] as? [String: String])!
-
+            
             let key = SwiftFlutterPlugin.registrar!.lookupKey(forAsset: url)
             let assetURL = Bundle.main.url(forResource: key, withExtension: nil)
             if assetURL == nil {
@@ -579,7 +579,7 @@ public class SwiftFlutterPlugin: NSObject, FlutterPlugin {
                 DispatchQueue.main.async(execute: {() -> Void in
                     if webViewController != nil {
                         let baseWindowLevel = UIApplication.shared.keyWindow?.windowLevel
-                        self.tmpWindow?.windowLevel = UIWindowLevel(baseWindowLevel! + 1)
+                        self.tmpWindow?.windowLevel = UIWindow.Level(baseWindowLevel! + 1)
                         self.tmpWindow?.makeKeyAndVisible()
                         UIApplication.shared.delegate?.window??.makeKeyAndVisible()
                         self.tmpWindow?.rootViewController?.present(webViewController!, animated: true, completion: nil)
@@ -591,7 +591,7 @@ public class SwiftFlutterPlugin: NSObject, FlutterPlugin {
             }
         }
     }
-
+    
     public func hide(uuid: String) {
         if let webViewController = self.webViewControllers[uuid] {
             if webViewController != nil {
@@ -601,7 +601,7 @@ public class SwiftFlutterPlugin: NSObject, FlutterPlugin {
                 DispatchQueue.main.async(execute: {() -> Void in
                     if webViewController != nil {
                         webViewController?.presentingViewController?.dismiss(animated: true, completion: {() -> Void in
-                            self.tmpWindow?.windowLevel = 0.0
+                            self.tmpWindow?.windowLevel = UIWindow.Level(rawValue: 0.0)
                             UIApplication.shared.delegate?.window??.makeKeyAndVisible()
                             if self.previousStatusBarStyle != -1 {
                                 UIApplication.shared.statusBarStyle = UIStatusBarStyle(rawValue: self.previousStatusBarStyle)!
@@ -701,7 +701,7 @@ public class SwiftFlutterPlugin: NSObject, FlutterPlugin {
     }
     
     func onBrowserCreated(uuid: String, webView: WKWebView) {
-        if let webViewController = self.webViewControllers[uuid] {
+        if self.webViewControllers[uuid] != nil {
             SwiftFlutterPlugin.channel!.invokeMethod("onBrowserCreated", arguments: ["uuid": uuid])
         }
     }
@@ -729,7 +729,7 @@ public class SwiftFlutterPlugin: NSObject, FlutterPlugin {
     }
     
     func onProgressChanged(uuid: String, webView: WKWebView, progress: Int) {
-        if let webViewController = self.webViewControllers[uuid] {
+        if self.webViewControllers[uuid] != nil {
             SwiftFlutterPlugin.channel!.invokeMethod("onProgressChanged", arguments: ["uuid": uuid, "progress": progress])
         }
     }
@@ -763,7 +763,7 @@ public class SwiftFlutterPlugin: NSObject, FlutterPlugin {
     }
     
     func onScrollChanged(uuid: String, webView: WKWebView, x: Int, y: Int) {
-        if let webViewController = self.webViewControllers[uuid] {
+        if self.webViewControllers[uuid] != nil {
             SwiftFlutterPlugin.channel!.invokeMethod("onScrollChanged", arguments: ["uuid": uuid, "x": x, "y": y])
         }
     }

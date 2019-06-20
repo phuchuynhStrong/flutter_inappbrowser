@@ -28,41 +28,41 @@ func convertToDictionary(text: String) -> [String: Any]? {
 // the message needs to be concatenated with '' in order to have the same behavior like on Android
 let consoleLogJS = """
 (function() {
-    var oldLogs = {
-        'consoleLog': console.log,
-        'consoleDebug': console.debug,
-        'consoleError': console.error,
-        'consoleInfo': console.info,
-        'consoleWarn': console.warn
-    };
+var oldLogs = {
+'consoleLog': console.log,
+'consoleDebug': console.debug,
+'consoleError': console.error,
+'consoleInfo': console.info,
+'consoleWarn': console.warn
+};
 
-    for (var k in oldLogs) {
-        (function(oldLog) {
-            console[oldLog.replace('console', '').toLowerCase()] = function() {
-                var message = '';
-                for (var i in arguments) {
-                    if (message == '') {
-                        message += arguments[i];
-                    }
-                    else {
-                        message += ' ' + arguments[i];
-                    }
-                }
-                window.webkit.messageHandlers[oldLog].postMessage(message);
-            }
-        })(k);
-    }
+for (var k in oldLogs) {
+(function(oldLog) {
+console[oldLog.replace('console', '').toLowerCase()] = function() {
+var message = '';
+for (var i in arguments) {
+if (message == '') {
+message += arguments[i];
+}
+else {
+message += ' ' + arguments[i];
+}
+}
+window.webkit.messageHandlers[oldLog].postMessage(message);
+}
+})(k);
+}
 })();
 """
 
 let resourceObserverJS = """
 (function() {
-    var observer = new PerformanceObserver(function(list) {
-        list.getEntries().forEach(function(entry) {
-            window.webkit.messageHandlers['resourceLoaded'].postMessage(JSON.stringify(entry));
-        });
-    });
-    observer.observe({entryTypes: ['resource', 'mark', 'measure']});
+var observer = new PerformanceObserver(function(list) {
+list.getEntries().forEach(function(entry) {
+window.webkit.messageHandlers['resourceLoaded'].postMessage(JSON.stringify(entry));
+});
+});
+observer.observe({entryTypes: ['resource', 'mark', 'measure']});
 })();
 """
 
@@ -71,7 +71,7 @@ let JAVASCRIPT_BRIDGE_NAME = "flutter_inappbrowser"
 let javaScriptBridgeJS = """
 window.\(JAVASCRIPT_BRIDGE_NAME) = {};
 window.\(JAVASCRIPT_BRIDGE_NAME).callHandler = function(handlerName, ...args) {
-    window.webkit.messageHandlers['callHandler'].postMessage( {'handlerName': handlerName, 'args': JSON.stringify(args)} );
+window.webkit.messageHandlers['callHandler'].postMessage( {'handlerName': handlerName, 'args': JSON.stringify(args)} );
 }
 """
 
@@ -92,7 +92,7 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
         uiDelegate = self
         navigationDelegate = self
         scrollView.delegate = self
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: NSNotification.Name.UIResponder.keyboardWillShowNotification, object: nil)
         UIMenuController.shared.menuItems = [UIMenuItem(title: "Comment", action: #selector(self.onCommentPressed))]
         UIMenuController.shared.update()
     }
@@ -209,7 +209,7 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
     }
     
     override public func observeValue(forKeyPath keyPath: String?, of object: Any?,
-                               change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+                                      change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "estimatedProgress" {
             let progress = Int(estimatedProgress * 100)
             onProgressChanged(progress: progress)
@@ -242,7 +242,7 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
             takeSnapshot(with: nil, completionHandler: {(image, error) -> Void in
                 var imageData: Data? = nil
                 if let screenshot = image {
-                    imageData = UIImagePNGRepresentation(screenshot)!
+                    imageData = screenshot.pngData()!
                 }
                 completionHandler(imageData)
             })
@@ -501,8 +501,8 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
     }
     
     public func webView(_ webView: WKWebView,
-                 decidePolicyFor navigationAction: WKNavigationAction,
-                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+                        decidePolicyFor navigationAction: WKNavigationAction,
+                        decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         
         if let url = navigationAction.request.url {
             
@@ -531,8 +531,8 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
     }
     
     public func webView(_ webView: WKWebView,
-                 decidePolicyFor navigationResponse: WKNavigationResponse,
-                 decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
+                        decidePolicyFor navigationResponse: WKNavigationResponse,
+                        decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
         
         if (options?.useOnLoadResource)! {
             if let url = navigationResponse.response.url {
@@ -611,8 +611,8 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
     }
     
     public func webView(_ view: WKWebView,
-                 didFailProvisionalNavigation navigation: WKNavigation!,
-                 withError error: Error) {
+                        didFailProvisionalNavigation navigation: WKNavigation!,
+                        withError error: Error) {
         webView(view, didFail: navigation, withError: error)
     }
     
